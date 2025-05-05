@@ -3,20 +3,30 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.models import User # for registering a user. "User" is built in django module
+from django import forms
+from .forms import SignUpForm
 
 def home(request):
     return render(request, 'home.html', {})
 
-def register(request):
+def register_user(request):
+    form = SignUpForm()
     if request.method == "POST":
-        form = UserCreationForm()
+        form = SignUpForm(request.POST) # getting everything they put in at the signup form
         if form.is_valid():
-            user = form.save()
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            # log in user
+            user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect(reverse("home"))
+            return redirect('home')
+        else:
+            messages.success(request, ("Something went wrong"))
+            return redirect('register')
     else:
-        form = UserCreationForm()
-    return render(request, 'register.html', {"form":form})
+        return render(request, 'register.html', {"form":form})
 
 def login_user(request):
     if request.method == "POST":
