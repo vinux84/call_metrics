@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-5 text-white">
+            <h3>User Name: &nbsp;{{user.username}}</h3>
+            <h3>First Name: &nbsp;{{user.first_name}}</h3>
+            <h3>Last Name: &nbsp;{{user.last_name}}</h3>
+            <h3>Email: &nbsp;{{user.email}}</h3>
+            <a class="btn btn-primary"href="{% url 'update_user' %}" role="button">Update Profile</a> &nbsp;
+            <a class="btn btn-primary"href="{% url 'update_password' %}" role="button">Update Password</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

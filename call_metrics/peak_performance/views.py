@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User # for registering a user. "User" is built in django module
 from django import forms
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
 
 def home(request):
     return render(request, 'home.html', {})
@@ -37,7 +37,7 @@ def login_user(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.success(request, ("Wrong Username or Password"))
+            messages.success(request, "Wrong Username or Password")
             return redirect('login')
     else:
         return render(request, 'login.html', {})
@@ -46,4 +46,48 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
+def user_profile(request):
+    if request.user.is_authenticated:
+        return render(request, 'user_profile.html', {})
+    else:
+        messages.success(request, "You must be logged in to access that page")
+        return redirect('home')
+
+def update_user(request):
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+        if user_form.is_valid():
+            user_form.save()
+            login(request, current_user)
+            messages.success(request, "Successfully Updated Profile") 
+            return redirect('user_profile')
+        return render(request, "update_user.html", {'user_form':user_form})
+    else:
+        messages.success(request, "You must be logged in to access that page")
+        return redirect('home')
+
+def update_password(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        # did they fill out the form? 
+        if request.method == "POST":
+            form = ChangePasswordForm(current_user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Password Updated")
+                login(request, current_user)
+                return redirect('user_profile')
+            else:
+                for error in list(form.errors.values()):
+                    messages.error(request, error)
+                    return redirect('update_password')
+        else:
+            form = ChangePasswordForm(current_user)
+            return render(request, 'update_password.html', {'form':form})
+    else:
+        messages.success(request, "You must be logged in to access that page")
+        return redirect('home')
+    
+    
 
