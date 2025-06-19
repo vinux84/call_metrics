@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-8">
             {% if user.is_authenticated %}
-                {% for project in projects %}
-                    <a class="btn btn-primary" href="{% url 'project' project.id %}" role="button">{{ project.name }}</a>
-                {% endfor %}
+                <h2>{{ project.name }}</h2>
+                <p>Date Created: {{ project.date_creation }}</p>
+                <p>Last Updated: {{ project.date_updated }}</p>
             {% else %}
                 <h1>Please log in to see your Dashboard</h1>
             {% endif %}

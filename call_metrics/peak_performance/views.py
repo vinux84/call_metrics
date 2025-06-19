@@ -5,10 +5,16 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User # for registering a user. "User" is built in django module
 from django import forms
-from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from .models import Project
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, ProjectForm
 
 def home(request):
-    return render(request, 'home.html', {})
+    projects = Project.objects.all().order_by('-date_updated')
+    return render(request, 'home.html', {'projects':projects})
+
+def project(request, pk):
+    project = Project.objects.get(id=pk)
+    return render(request, 'project.html', {'project': project})
 
 def register_user(request):
     form = SignUpForm()
@@ -88,6 +94,27 @@ def update_password(request):
     else:
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
-    
-    
+
+'''  
+def add_project(request):
+    if request.user.is_authenticated:
+        project_form = ProjectForm(request.POST)
+        if project_form.is_valid():
+            new_project = project_form.save(commit=False)
+            new_project.user = request.user
+            new_project.save()
+            messages.success(request, f'Project "{new_project.name}" created successfully!')
+        return render(request, "add_project.html", {'project_form':project_form})
+    else:
+        messages.success(request, "You must be logged in to access that page")
+        return redirect('home')
+'''
+
+
+
+
+
+
+
+        
 
