@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User # importing our user model we have created already in views.py
-import datetime
+from django.contrib.auth.models import User 
 
 class Project(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=200, help_text='The name of the project')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    name = models.CharField(max_length=200)
     date_creation = models.DateTimeField(auto_now=True)
     date_updated = models.DateTimeField(auto_now=True)
 

@@ -67,9 +67,15 @@ class ChangePasswordForm(SetPasswordForm):
 		self.fields['new_password2'].help_text = ''
 
 class ProjectForm(forms.ModelForm):
-	project_name = forms.CharField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Project Name'}), required=True)
-
-	class meta:
+	class Meta:
 		model = Project
-		fields = ['project_name',] # may need a commma after names
-		exclude = ['user',]
+		fields = ['name'] 
+
+	def __init__(self, *args, **kwargs):
+		super(ProjectForm, self).__init__(*args, **kwargs)
+		
+		self.fields['name'].widget.attrs['class'] = 'form-control'
+		self.fields['name'].widget.attrs['placeholder'] = 'New Project Name'
+		self.fields['name'].label = ''
+		self.fields['name'].help_text = ''
+	

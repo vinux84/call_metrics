@@ -7,6 +7,7 @@ from django.contrib.auth.models import User # for registering a user. "User" is 
 from django import forms
 from .models import Project
 from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, ProjectForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     projects = Project.objects.all().order_by('-date_updated')
@@ -110,7 +111,18 @@ def add_project(request):
         return redirect('home')
 '''
 
-
+@login_required(login_url='login/')
+def new_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            add_project = form.save(commit=False)
+            add_project.user = request.user
+            add_project.save()
+            return redirect('home')
+    else:
+        form = ProjectForm()
+    return render(request, 'new_project.html', {'form':form})
 
 
 

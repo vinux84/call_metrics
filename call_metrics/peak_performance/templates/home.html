@@ -3,13 +3,23 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
+        <div class="col-12 text-center"> 
+            <h2>Projects</h2>
+        </div>
+        <div class="col-12 text-end">
+            {% if user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'new_project' %}" role="button">New Project</a>  
+            {% else %}
+                <h1>Please log in to see your projects</h1>
+            {% endif %}  
+        </div>
         <div class="col-8">
             {% if user.is_authenticated %}
                 {% for project in projects %}
                     <a class="btn btn-primary" href="{% url 'project' project.id %}" role="button">{{ project.name }}</a>
                 {% endfor %}
             {% else %}
-                <h1>Please log in to see your Dashboard</h1>
+                <h1>Please log in to see your projects</h1>
             {% endif %}
         </div>
     </div>
