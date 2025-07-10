@@ -16,7 +16,7 @@
         <div class="col-8">
             {% if user.is_authenticated %}
                 {% for project in projects %}
-                    <a class="btn btn-primary" href="{% url 'project' project.id %}" role="button">{{ project.name }}</a>
+                    <a class="btn btn-info" href="{% url 'project' project.id %}" role="button">{{ project.name }}</a>
                 {% endfor %}
             {% else %}
                 <h1>Please log in to see your projects</h1>
