@@ -12,6 +12,15 @@
             {% else %}
                 <h1>Please log in to see your Dashboard</h1>
             {% endif %}
+        <div class="col-4">
+            <form action="{% url 'new_project' %}" method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <br>
+                <button type="submit" class="btn btn-success">Successful</button>
+                <button type="submit" class="btn btn-danger">Unsuccessful</button>
+            </form>    
+        </div>    
         </div>
     </div>
 </div>
