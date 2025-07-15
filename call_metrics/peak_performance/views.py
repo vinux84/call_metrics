@@ -96,21 +96,6 @@ def update_password(request):
         messages.success(request, "You must be logged in to access that page")
         return redirect('home')
 
-'''  
-def add_project(request):
-    if request.user.is_authenticated:
-        project_form = ProjectForm(request.POST)
-        if project_form.is_valid():
-            new_project = project_form.save(commit=False)
-            new_project.user = request.user
-            new_project.save()
-            messages.success(request, f'Project "{new_project.name}" created successfully!')
-        return render(request, "add_project.html", {'project_form':project_form})
-    else:
-        messages.success(request, "You must be logged in to access that page")
-        return redirect('home')
-'''
-
 @login_required(login_url='login/')
 def new_project(request):
     if request.method == 'POST':
@@ -124,7 +109,10 @@ def new_project(request):
         form = ProjectForm()
     return render(request, 'new_project.html', {'form':form})
 
+def add_calls(request):
+    #projects = Project.objects.all().order_by('-date_updated')
 
+    return render(request, 'add_calls.html', {})
 
 
 

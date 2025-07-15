@@ -5,11 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-8">
             {% if user.is_authenticated %}
-                <h2>Project</h2>
-                <h2>{{ project.name }}</h2>
-                <p>Date Created: {{ project.date_creation }}</p>
-                <p>Last Updated: {{ project.date_updated }}</p>
-                <a class="btn btn-primary"href="{% url 'add_calls' %}" role="button">Add Calls</a>
+                <h2>Add calls for {{ project.name }}</h2>
+                <a class="btn btn-success"href="{% url 'add_calls' %}" role="button">Successful</a>
+                <a class="btn btn-danger"href="{% url 'add_calls' %}" role="button">Unsuccessful</a>
             {% else %}
                 <h1>Please log in to see your Dashboard</h1>
             {% endif %}
